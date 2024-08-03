@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
 import userModel from "./userModel";
+import bcrypt from "bcrypt"
 
 const createUser = async (
   req: Request,
@@ -19,6 +20,10 @@ const createUser = async (
         const errro = createHttpError(400,"User already exists with this gmail")
         return next(errro);
     }
+
+    // Password -->> hash
+    const hashedPassword = await bcrypt.hash(password,10) ;
+    
     //Process
     //Response
     res.json({message:"crate user"});
